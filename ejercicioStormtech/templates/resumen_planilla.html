@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resumen de Planilla {{ planilla.numero }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Resumen de la Planilla N° {{ planilla.numero }}</h1>
+        <p><strong>Fecha de Creación:</strong> {{ planilla.fecha }}</p>
+
+        <h2>Paquetes en esta Planilla</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tracking ID</th>
+                    <th>Destinatario</th>
+                    <th>Estado Actual</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for paquete in paquetes %}
+                    <tr>
+                        <td>{{ paquete.tracking|truncatechars:15 }}...</td>
+                        <td>{{ paquete.nombre }}</td>
+                        <td>{{ paquete.get_estado_display }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="3">Esta planilla no tiene paquetes asignados.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

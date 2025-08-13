@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Paquetes</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Paquetes</h1>
+
+        <form method="GET" class="filter-form">
+            
+            <input type="text" name="cliente" placeholder="Filtrar por cliente..." value="{{ filtro_cliente|default:'' }}">
+            
+            <select name="estado">
+                <option value="">-- Todos los estados --</option>
+                <option value="en_deposito" {% if filtro_estado == 'en_deposito' %}selected{% endif %}>En Depósito</option>
+                <option value="en_distribucion" {% if filtro_estado == 'en_distribucion' %}selected{% endif %}>En Distribución</option>
+            </select>
+            <select name="tipo_paquete">
+                <option value="">-- Todos los tipos --</option>
+                <option value="P" {% if filtro_tipo_paquete == 'P' %}selected{% endif %}>Pequeño (P)</option>
+                <option value="M" {% if filtro_tipo_paquete == 'M' %}selected{% endif %}>Mediano (M)</option>
+                <option value="G" {% if filtro_tipo_paquete == 'G' %}selected{% endif %}>Grande (G)</option>
+            </select>
+            
+            <button type="submit">Filtrar</button>
+        </form>
+
+        <hr>
+
+        {% if paquetes %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tracking ID</th>
+                        <th>Destinatario</th>
+                        <th>Cliente</th>
+                        <th>Estado</th>
+                        <th>Tipo</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for paquete in paquetes %}
+                        <tr>
+                            <td>{{ paquete.tracking|truncatechars:15 }}...</td>
+                            <td>{{ paquete.nombre }}</td>
+                            <td>{{ paquete.cliente.nombre }}</td>
+                            <td>{{ paquete.get_estado_display }}</td>
+                            <td>{{ paquete.tipo_paquete }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No se encontraron paquetes con los filtros aplicados.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

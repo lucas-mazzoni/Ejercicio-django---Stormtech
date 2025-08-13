@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from .serializer import *
 from .models import *
 from rest_framework import status
@@ -21,12 +21,13 @@ class PaqueteListar(ListAPIView):   #endpoint para traer y filtrar paquetes (eje
         if estado:
             query = query.filter(estado=estado)   #si los campos existe, quiere decir que se quiere filtrar
         if cliente:
-            query = query.filter(cliente=cliente)
+            query = query.filter(cliente__nombre__icontains=cliente) #asi filtro por nombre de cliente
         if tipo_paquete:
             query = query.filter(tipo_paquete=tipo_paquete)
 
         return query
     
+        
     
 
 class PaqueteCrear(CreateAPIView):  #Create de Paquete (ejercicio 2)
@@ -74,13 +75,14 @@ class AsignarPaquetes(APIView):  #uso APIView ya que la entrada es diferente a u
 
 
 class PlanillaResumenView(RetrieveAPIView): #ejercicio 4, se accede a traves del id gracias a la url
+#metodo GET
     queryset = Planilla.objects.all()
     serializer_class = PlanillaSerializer
 
 
 
 class PlanillaADistribucion(APIView):    #ejecricio 5
-    def post(self, request, planilla_id):  #hago un POST ya que modicio masivamente varias tuplas
+    def post(self, request, planilla_id):  #hago un POST ya que modifico masivamente varias tuplas
         paquetes_actualizar = Paquete.objects.filter(item__planilla_id=planilla_id,estado="en_deposito") #asi obtengo solo los paquetes que estan en deposito y no actualizo paquetes de mas
         cambios = paquetes_actualizar.update(estado="en_distribucion")
         return Response(
@@ -104,3 +106,51 @@ class ModificarMotivoFallo(APIView):   #ejercicio 6
         
         except Item.DoesNotExist:
                 return Response({"no se encontro el item seleccionado"},status=status.HTTP_400_BAD_REQUEST)
+        
+
+
+
+#---------------------------------aca voy a poner funciones frontend simples para dos ejercicios-------------------------
+
+#Los metodos que defino aca abajo son para poder visualizar las consultas del ejercicio 1 y el ejercicio 4, ya que son los metodos
+#GET  que hay en el enunciado. Opte por usar los templates que brinda django, creando una estructura html y css simple, las funciones
+#para el front son iguales a la de sus endpoints, pero las defino nuevamente con el metodo render, para separar la estructura back/front
+
+
+
+def front_listar_paquetes(request):
+
+    query = Paquete.objects.all()
+
+    estado = request.GET.get("estado")
+    cliente = request.GET.get("cliente")
+    tipo_paquete = request.GET.get("tipo_paquete")
+
+    if estado:
+        query = query.filter(estado=estado)   
+    if cliente:
+        query = query.filter(cliente__nombre__icontains=cliente)
+    if tipo_paquete:
+        query = query.filter(tipo_paquete=tipo_paquete)
+    
+    context = {
+        "paquetes": query,
+        "filtro_estado": estado,
+        "filtro_cliente": cliente,
+        "filtro_tipo_paquete": tipo_paquete,
+    }
+
+    return render(request, "lista_paquetes.html", context)
+
+
+def front_resumen_planilla(request, pk):
+
+    planilla = get_object_or_404(Planilla, pk=pk)
+
+    paquetes_asociados = Paquete.objects.filter(item__planilla=planilla)
+    context = {
+        'planilla': planilla,
+        'paquetes': paquetes_asociados
+    }
+
+    return render(request, 'resumen_planilla.html', context)   

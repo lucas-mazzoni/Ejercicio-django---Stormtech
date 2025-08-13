@@ -11,5 +11,7 @@ urlpatterns = [
     path('planillas/asignar-paquetes/', AsignarPaquetes.as_view(), name='asignar-paquetes'),
     path('planillas/<int:pk>/resumen/', PlanillaResumenView.as_view(), name='planilla-resumen'),
     path('planillas/<int:planilla_id>/pasar-a-distribucion/',PlanillaADistribucion.as_view(),name='pasar-a-distribucion'),
-    path('planillas/item/actualizar-fallo/',ModificarMotivoFallo.as_view(),name='actualizar-fallo-otem'),
+    path('planillas/item/actualizar-fallo/',ModificarMotivoFallo.as_view(),name='actualizar-fallo-item'),
+    path('front/paquetes/listar/', front_listar_paquetes, name='front-paquetes-lista'),
+    path('front/planillas/<int:pk>/resumen/', front_resumen_planilla, name='front-planilla-resumen'),
     ]
