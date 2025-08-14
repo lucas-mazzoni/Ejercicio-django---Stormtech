@@ -14,4 +14,5 @@ urlpatterns = [
     path('planillas/item/actualizar-fallo/',ModificarMotivoFallo.as_view(),name='actualizar-fallo-item'),
     path('front/paquetes/listar/', front_listar_paquetes, name='front-paquetes-lista'),
     path('front/planillas/<int:pk>/resumen/', front_resumen_planilla, name='front-planilla-resumen'),
+    path('', page_principal, name='homepage'),
     ]

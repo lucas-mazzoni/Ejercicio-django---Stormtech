@@ -3,12 +3,12 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Lista de Paquetes</title>
+    <title>Lista de paquetes</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
     <div class="container">
-        <h1>Lista de Paquetes</h1>
+        <h1>Lista de paquetes</h1>
 
         <form method="GET" class="filter-form">
             
@@ -16,8 +16,8 @@
             
             <select name="estado">
                 <option value="">-- Todos los estados --</option>
-                <option value="en_deposito" {% if filtro_estado == 'en_deposito' %}selected{% endif %}>En Depósito</option>
-                <option value="en_distribucion" {% if filtro_estado == 'en_distribucion' %}selected{% endif %}>En Distribución</option>
+                <option value="en_deposito" {% if filtro_estado == 'en_deposito' %}selected{% endif %}>En depósito</option>
+                <option value="en_distribucion" {% if filtro_estado == 'en_distribucion' %}selected{% endif %}>En distribución</option>
             </select>
             <select name="tipo_paquete">
                 <option value="">-- Todos los tipos --</option>

@@ -154,3 +154,9 @@ def front_resumen_planilla(request, pk):
     }
 
     return render(request, 'resumen_planilla.html', context)   
+
+
+def page_principal(request):
+
+    context = {} 
+    return render(request, 'principal.html', context)

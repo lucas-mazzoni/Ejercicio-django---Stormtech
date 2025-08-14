@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagina principal de la API</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <div class="container"> 
+        <h1>Pagina de interacción con la API</h1>
+        <nav class="dashboard-nav">
+            <a href="{% url 'front-paquetes-lista' %}">Listar y filtrar paquetes</a>
+            <a href="{% url 'paquetes-crear' %}">Crear nuevo Paquete</a>
+            <a href="{% url 'asignar-paquetes' %}">Asignar paquetes a planilla</a>
+            <a href="{% url 'actualizar-fallo-item' %}">Actualizar motivo de fallo</a>
+        </nav>
+
+        <div class="form-inline">
+            <form id="form-planilla">
+                <label for="planilla-id">Interactuar con una planilla específica</label>
+                <input type="number" id="planilla-id" placeholder="N° de planilla" required>
+                <button type="button" class="btn-action" data-url-template="{% url 'front-planilla-resumen' pk=0 %}">Ver Resumen</button>
+                <button type="button" class="btn-action" data-url-template="{% url 'pasar-a-distribucion' planilla_id=0 %}">Pasar paquetes a distribución</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.btn-action').forEach(button => {
+            button.addEventListener('click', function(event) {
+                const planillaId = document.getElementById('planilla-id').value;
+                if (!planillaId) {
+                    alert('Por favor, introduce un número de planilla.');
+                    return;
+                }
+                
+                const urlTemplate = this.getAttribute('data-url-template');
+                const finalUrl = urlTemplate.replace('0', planillaId);            
+                window.location.href = finalUrl;
+            });
+        });
+    </script>
+</body>
+</html>
