@@ -86,7 +86,7 @@ class PlanillaADistribucion(APIView):    #ejecricio 5
         paquetes_actualizar = Paquete.objects.filter(item__planilla_id=planilla_id,estado="en_deposito") #asi obtengo solo los paquetes que estan en deposito y no actualizo paquetes de mas
         cambios = paquetes_actualizar.update(estado="en_distribucion")
         return Response(
-            { f"se actualizaron {cambios} paquetes paquetes"},
+            { f"se actualizaron {cambios} paquetes"},
             status=status.HTTP_200_OK)
     
 
