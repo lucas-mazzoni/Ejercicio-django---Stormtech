@@ -19,7 +19,7 @@ Este repositorio contiene la solución al ejercicio de desarrollo de un sistema 
 
 -   **Pagina Principal (`/`)**: Página de inicio con una botonera para acceder a las funcionalidades de la API explorable.
 -   **Listado y Filtrado de Paquetes (`/front/paquetes/listar/`)**: Página HTML para visualizar y filtrar todos los paquetes.
--   **Resumen de planilla: ('front/planillas/<int:pk>/resumen/')**: Pagina HTML para poder visualizar el resumen de una planilla.
+-   **Resumen de planilla: (`front/planillas/<int:pk>/resumen/`)**: Pagina HTML para poder visualizar el resumen de una planilla.
 
 
 
